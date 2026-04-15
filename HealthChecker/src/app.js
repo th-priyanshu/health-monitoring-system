@@ -5,21 +5,26 @@ const healthRoutes = require('./routes/health');
 
 const app = express();
 
-// Middleware
-app.use(cors()); // Frontend ko connect karne ke liye zaroori
+// 1. CORS Middleware (Browser security ke liye)
+app.use(cors()); 
 app.use(express.json());
 
-// Database Connection
+// 2. LIVE LOGGING MIDDLEWARE (Isse aapko Render Logs mein clicks dikhenge)
+app.use((req, res, next) => {
+    console.log(`📩 [${new Date().toLocaleTimeString()}] Click Detect Hua: ${req.method} ${req.url}`);
+    next();
+});
+
+// 3. Database Connection
 connectDB();
 
-// Routes
+// 4. Routes
 app.use('/health', healthRoutes);
 
-// Render/Production ke liye Port configuration
+// 5. Render/Production Port Configuration
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
     console.log(`✅ Server is up and running on port ${PORT}!`);
-    console.log(`🚀 Health Check API: https://health-checker-api.onrender.com/health`);
-    console.log(`Ready to monitor your dependencies...`);
+    console.log(`🚀 Health Check API ready to monitor your dependencies...`);
 });
