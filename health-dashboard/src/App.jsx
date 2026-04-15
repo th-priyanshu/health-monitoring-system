@@ -10,7 +10,7 @@ const App = () => {
     setLoading(true);
     try {
       // Backend (Port 3000) se data fetch karna
-      const response = await axios.get('http://localhost:3000/health');
+      const response = await axios.get('https://health-checker-api-1zpi.onrender.com');
       setData(response.data);
     } catch (error) {
       console.error("Backend connection failed", error);
